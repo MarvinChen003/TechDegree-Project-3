@@ -1,6 +1,7 @@
 from phrase import Phrase
 import random
 import sys
+# sys imported but not use
 import string
 
 
@@ -10,6 +11,7 @@ class Game():
     phrases = []
     active_phrase = None
     guesses = [" "]
+    # There might better be class property/attributes
     congratulatory_messages = [
             "Nice Job!", 
             "Woohoo, that's great!",
@@ -39,6 +41,7 @@ class Game():
         print("\n     ==============================")
         print("        Welcome to Phrase Hunter")
         print("     ==============================\n")
+        # use variable not function
 
 
     def rules(self):
@@ -47,11 +50,14 @@ class Game():
         print("  - If you can complete the phrase before making 5 incorrect guesses,you win.") 
         print("  - If you make 5 incorrect guesses, you lose.")
         print("  - You can only input individual letters that you've not previously guessed.\n")
+        # use variable not function
    
 
     def start(self):
         self.welcome()
         self.rules()
+        # line 53 - 54
+        # Use variable to define rules and message then give it to print as parameter
         check_complete_value = False
         while self.missed < 5 and check_complete_value == False:
             print(f"\nGuess #{self.guess_count + 1}:\n")
@@ -61,7 +67,12 @@ class Game():
             self.guesses.append(user_guess_uppercase)
             self.guesses.append(user_guess_lowercase)
             self.handle_guess(user_guess_uppercase,user_guess_lowercase)
+            # Line 60 - 63, user only allowed to input lower cases,
+            # check_phrase method should
+            # has the ability to check upper and lower cases
+
             check_complete_value = self.active_phrase.check_complete(self.guesses)
+            # you can put line 70 in the condition of line 58
         self.game_over()
 
 
@@ -69,6 +80,7 @@ class Game():
         self.pointer = random.randint(0, 4)
         self.selected_phrase = self.phrases[self.pointer]
         return self.selected_phrase
+        # pointer and selected_phrase might not necessarily be a class property/attribute
 
 
     def get_guess(self):
@@ -76,6 +88,7 @@ class Game():
         while not user_guess_input:
             user_guess_input = input("\nInput Guess: What letter would you like to guess next? >>> ")
         return user_guess_input
+        # line 81 & 82 might not be required
 
 
     def constrain_guess(self):
@@ -92,19 +105,21 @@ class Game():
         user_guess_uppercase = user_guess.upper()
         user_guess_lowercase = user_guess.lower()
         return user_guess_uppercase, user_guess_lowercase
+        # this function would not be required if you update check_phrase method
 
 
     def get_random_congratulatory_message(self):
         self.pointer = random.randint(0, 3)
         self.selected_congratulatory_message = self.congratulatory_messages[self.pointer]
         return self.selected_congratulatory_message
+        # pointer and selected_congratulatory_message might not necessarily be a class property/attribute
 
 
     def get_random_encouraging_messages(self):
         self.pointer = random.randint(0, 3)
         self.selected_encouraging_messages = self.encouraging_messages[self.pointer]
         return self.selected_encouraging_messages
-
+        # pointer and selected_encouraging_messages might not necessarily be a class property/attribute
 
     def handle_guess(self, user_guess_uppercase, user_guess_lowercase):
         value1 = self.active_phrase.check_phrase(user_guess_uppercase)
@@ -121,6 +136,9 @@ class Game():
             print(f"{encouraging_message}", end=" ")
             print("Your guess is incorrect.\n")
             self.missed += 1
+        # if...else... would be fine here
+        # but I guess, if you change check_phrase method
+        # you would not require check value1/value2
 
         self.guess_count += 1
 
@@ -142,3 +160,6 @@ class Game():
             print("\n\n-------------- YOU WIN! --------------")
             print(f"You've completed the phrase: \n")
             self.active_phrase.display(self.guesses)
+        # extract the message as variable
+        # self.active_phrase.display(self.guesses) can be extracted out from if...else...
+        # put it after if...else... will be fine
